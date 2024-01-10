@@ -4,7 +4,7 @@ const loadMoreBtn = document.getElementById('loadMoreBtn');
 const pokemonDetail = document.getElementById('pokemonDetail');
 const inputSearch = document.getElementById('input-search');
 const limit = 10;
-let searchLimit = 24;
+let searchLimit = 10;
 let offset = 0;
 const maxRecords = 151;
 const pokeSvg = `
@@ -95,19 +95,12 @@ function loadByFilter(offset, limit) {
     }).catch((error) => console.log(error));
 }
 
-function handleInputFocus() {
+inputSearch.addEventListener("click", handleInputClick)
+
+function handleInputClick() {
     searchLimit = 151;
     loadByFilter(0, searchLimit);
-    inputSearch.addEventListener("blur", handleInputBlur);
 }
-
-function handleInputBlur() {
-    searchLimit = 24;
-    loadByFilter(0, searchLimit);
-    inputSearch.removeEventListener("blur", handleInputBlur);
-}
-
-inputSearch.addEventListener("focus", handleInputFocus);
 
 
 inputSearch.addEventListener("keyup", filterPokemons);
