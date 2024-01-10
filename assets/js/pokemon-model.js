@@ -4,4 +4,5 @@ class Pokemon{
     mainType;
     types = [];
     sprite;
+    abilities = [];
 }

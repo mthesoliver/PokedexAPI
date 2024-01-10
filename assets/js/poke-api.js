@@ -28,11 +28,14 @@ function convertPokeApiDetailToPokemon(pokeDetail){
     pokemon.attack = pokeDetail.stats[1].base_stat;
     pokemon.defense = pokeDetail.stats[2].base_stat;
     pokemon.speed = pokeDetail.stats[5].base_stat;
-    pokemon.hab1 = pokeDetail.abilities[0].ability.name;
-    pokemon.hab2 = pokeDetail.abilities[1].ability.name;
 
     const types = pokeDetail.types.map((typeSlot) => typeSlot.type.name);
     const [type] = types;
+
+    const abilities = pokeDetail.abilities.map((ability) => ability.ability.name);
+    const [ability] = abilities;
+
+    pokemon.abilities = abilities;
 
     pokemon.types = types;
     pokemon.mainType = type;

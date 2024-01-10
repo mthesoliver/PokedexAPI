@@ -2,7 +2,9 @@
 const listaOrdenadaPokemons = document.querySelector("#pokemonList");
 const loadMoreBtn = document.getElementById('loadMoreBtn');
 const pokemonDetail = document.getElementById('pokemonDetail');
+const inputSearch = document.getElementById('input-search');
 const limit = 10;
+let searchLimit = 24;
 let offset = 0;
 const maxRecords = 151;
 const pokeSvg = `
@@ -28,29 +30,30 @@ const pokeSvg = `
 </g>
 </svg>
 `
-loadPokemons(0,10);
 
-loadMoreBtn.addEventListener("click", () => {    
+loadPokemons(0, searchLimit);
+
+loadMoreBtn.addEventListener("click", () => {
     offset += limit;
     let qtdRecordsNextPage = offset + limit;
 
-    if(qtdRecordsNextPage >= maxRecords){
+    if (qtdRecordsNextPage >= maxRecords) {
         const newLimit = maxRecords - offset;
         loadPokemons(offset, newLimit);
 
         loadMoreBtn.parentElement.removeChild(loadMoreBtn)
-        
-    }else{ 
+
+    } else {
         loadPokemons(offset, limit);
     }
 })
 
 
-function loadPokemons(offset, limit){
+function loadPokemons(offset, limit) {
     pokeApi.getPokemons(offset, limit).then((pokemonList = []) => {
-        
+
         listaOrdenadaPokemons.innerHTML += pokemonList.map((pokemon) =>
-        `<li class="pokemon  ${pokemon.mainType}" onclick="showDetails()" id="${pokemon.name}">
+            `<li class="pokemon  ${pokemon.mainType}" onclick="showDetails()" id="${pokemon.name}">
         <span class="number">#${pokemon.number}</span>
         <span class="name">${pokemon.name}</span>
         
@@ -65,10 +68,64 @@ function loadPokemons(offset, limit){
         ${pokeSvg}
 
         </li> `).join('');
-        
+
     }).catch((error) => console.log(error));
 }
 
-function convertPokemonTypesToLi(pokemonTypes){
+function loadByFilter(offset, limit) {
+    pokeApi.getPokemons(offset, limit).then((pokemonList = []) => {
+
+        listaOrdenadaPokemons.innerHTML = pokemonList.map((pokemon) =>
+            `<li class="pokemon  ${pokemon.mainType}" onclick="showDetails()" id="${pokemon.name}">
+        <span class="number">#${pokemon.number}</span>
+        <span class="name">${pokemon.name}</span>
+        
+        <div class="detail">
+        <ol class="types">
+        ${convertPokemonTypesToLi(pokemon).join('')}
+        </ol>
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${pokemon.number}.gif"
+        alt="${pokemon.name}">
+        </div>
+
+        ${pokeSvg}
+
+        </li> `).join('');
+
+    }).catch((error) => console.log(error));
+}
+
+function handleInputFocus() {
+    searchLimit = 151;
+    loadByFilter(0, searchLimit);
+    inputSearch.addEventListener("blur", handleInputBlur);
+}
+
+function handleInputBlur() {
+    searchLimit = 24;
+    loadByFilter(0, searchLimit);
+    inputSearch.removeEventListener("blur", handleInputBlur);
+}
+
+inputSearch.addEventListener("focus", handleInputFocus);
+
+
+inputSearch.addEventListener("keyup", filterPokemons);
+
+function filterPokemons() {
+    const search = inputSearch.value.toLowerCase();
+
+    const allItems = document.querySelectorAll(".pokemon");
+
+    allItems.forEach((item) => {
+        let itemContent = item.id.toLowerCase();
+
+        const shouldDisplay = itemContent.includes(search);
+
+        item.style.display = shouldDisplay ? "flex" : "none";
+    });
+}
+
+function convertPokemonTypesToLi(pokemonTypes) {
     return pokemonTypes.types.map((type) => ` <li class="${type} type">${type}</li> `)
 }

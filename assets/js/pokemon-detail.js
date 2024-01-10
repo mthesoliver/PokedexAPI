@@ -72,11 +72,19 @@ function createCardDetail(pokemon){
     </ul>
     <ul class="details-list">
     <h2>Habilidades</h2>
-        <li class="detail-item"><strong>Habilidade 1:</strong> ${pokemon.hab1}</li>
-        <li class="detail-item"><strong>Habilidade 2:</strong> ${pokemon.hab2}</li>
+        ${convertAbilitiesToLi(pokemon).join("")}
     </ul>
 </div>
 
 `
     return pokemonDetailCard.innerHTML = detail;
 }
+
+function convertAbilitiesToLi(pokemonAbility) {
+    return pokemonAbility.abilities.map((ability) => ` <li class="detail-item"><strong>Habilidade:</strong> ${ability}</li>`)
+}
+
+/*
+<li class="detail-item"><strong>Habilidade 1:</strong> ${pokemon}</li>
+<li class="detail-item"><strong>Habilidade 2:</strong> ${pokemon}</li>
+*/
