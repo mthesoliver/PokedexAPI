@@ -86,6 +86,8 @@ h1 {
 .input-wrapper{
     display: flex;
     width: 100%;
+    position: relative;
+    z-index: 100;
 }
 
 .input-wrapper .input-search{
