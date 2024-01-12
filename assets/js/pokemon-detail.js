@@ -16,8 +16,6 @@ function showDetails() {
 
             createDetail(element.id);
         })
-        
-        //console.log(element.id)
     });
     
 }
@@ -83,8 +81,3 @@ function createCardDetail(pokemon){
 function convertAbilitiesToLi(pokemonAbility) {
     return pokemonAbility.abilities.map((ability) => ` <li class="detail-item"><strong>Habilidade:</strong> ${ability}</li>`)
 }
-
-/*
-<li class="detail-item"><strong>Habilidade 1:</strong> ${pokemon}</li>
-<li class="detail-item"><strong>Habilidade 2:</strong> ${pokemon}</li>
-*/

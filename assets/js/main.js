@@ -100,6 +100,7 @@ inputSearch.addEventListener("click", handleInputClick)
 function handleInputClick() {
     searchLimit = 151;
     loadByFilter(0, searchLimit);
+    loadMoreBtn.parentElement.removeChild(loadMoreBtn)
 }
 
 
